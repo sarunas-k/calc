@@ -14,7 +14,7 @@ class Calculator {
     }
 
     setTo(value) {
-        document.getElementsByClassName('display')[0].textContent = value;
+        document.getElementsByClassName('display')[0].textContent = value.toString().replace(',', '.');
     }
 
     clear() {
@@ -57,6 +57,8 @@ class Calculator {
     initKeyboard() {
         for (let i = 0; i < this.domElement.children.length; i++) {
             const button = this.domElement.children[i];
+            if (button.textContent === null)
+                return;
             this.keyboardButtons[button.textContent] = button;
         }
         for (const key in this.keyboardButtons) {
@@ -83,7 +85,7 @@ class Calculator {
                         return;
                     }
                     if (key.match(/\%{1}/)) {
-                        const valOperator = displayVal.replace(/^-?\d\B|\B\-{1}\d+\b|\d/g, '');
+                        const valOperator = displayVal.replace(/\B\-{1}\d+\b|(\d|\.)+/g, '');
                         if (valOperator.length === 0) {
                             this.replace('0');
                             return;
@@ -96,7 +98,7 @@ class Calculator {
                                 values = displayVal.split(valOperator);
                             }
                             let result = '';
-                            if (values.length === 2 && values[1].match(/^(100|\d{1,2})$/)) {
+                            if (values.length === 2 && values[1] > 0 && values[1] <= 100) {
                                 switch (valOperator) {
                                     case '*':
                                         result = values[0] * (values[1] / 100);
@@ -105,18 +107,19 @@ class Calculator {
                                         result = values[0] / (values[1] / 100);
                                         break;
                                     case '+':
-                                        result = parseInt(values[0]) + (values[0] * values[1] / 100);
+                                        result = parseFloat(values[0]) + (values[0] * values[1] / 100);
                                         break;
                                     case '-':
-                                        result = parseInt(values[0]) - (values[0] * values[1] / 100);
+                                        result = parseFloat(values[0]) - (values[0] * values[1] / 100);
                                         break;
                                 }
-                                this.replace(result !== '' ? Math.fround(result) : '0')
+                                this.replace(result !== '' ? result : '0')
                             }
                         }
                     } else if (!key.match(/\d{1}/)) {
-                        const valOperator = displayVal.replace(/^-?\d\B|\B\-{1}\d+\b|\d/g, '');
+                        const valOperator = displayVal.replace(/\B\-{1}\d+\b|(\d|\.)+/g, '');
                         if (valOperator.length !== 0) {
+
                             let values = null;
                             if (valOperator.match(/\-/) && displayVal[0] === '-') {
                                 values = displayVal.slice(1).split(valOperator);
@@ -124,15 +127,20 @@ class Calculator {
                             } else {
                                 values = displayVal.split(valOperator);
                             }
-
+                            if (key.match(/,{1}/)) {
+                                if (!values[1].match(/\./)) {
+                                    this.write(key);
+                                }
+                                return;
+                            }
                             let result = null;
                             if (values.length === 2 && values[0].length && values[1].length) {
-                                if (valOperator.match(/\/{1}/) && parseInt(values[1]) === 0) {
+                                if (valOperator.match(/\/{1}/) && parseFloat(values[1]) === 0) {
                                     this.replace('Error/Klaida');
                                     setTimeout(() => this.clear(), 2000);
                                     return;
                                 } else if (key.match(/(√x){1}/)) {
-                                    values[1] = Math.fround(Math.sqrt(parseInt(values[1])));
+                                    values[1] = Math.sqrt(parseFloat(values[1]));
                                 } else if (key.match(/(\+\/-){1}/)) {
                                     values[1] = this.makeNegative(values[1]);
                                 }
@@ -145,17 +153,17 @@ class Calculator {
                                         result = values[0] / values[1];
                                         break;
                                     case '+':
-                                        result = parseInt(values[0]) + parseInt(values[1]);
+                                        result = parseFloat(values[0]) + parseFloat(values[1]);
                                         break;
                                     case '-':
-                                        result = parseInt(values[0]) - parseInt(values[1]);
+                                        result = parseFloat(values[0]) - parseFloat(values[1]);
                                         break;
                                 }
-                                this.replace(result !== null ? Math.fround(result) : '0')
+                                this.replace(result !== null ? result : '0')
                             }
                         } else if (key.match(/(√x){1}/)) {
-                            if (!displayVal.match(/^-\w+$/)) {
-                                this.replace(Math.fround(Math.sqrt(displayVal)));
+                            if (!displayVal.match(/^-\w+(\w|\.)*$/)) {
+                                this.replace(Math.sqrt(displayVal));
                             } else {
                                 this.replace('Error/Klaida');
                                 setTimeout(() => this.clear(), 2000);
@@ -166,6 +174,8 @@ class Calculator {
                                 this.replace(this.makeNegative(displayVal));
                             else
                                 this.replace(this.makePositive(displayVal))
+                            return;
+                        } else if (key.match(/,{1}/) && displayVal.match(/\./)) {
                             return;
                         }
                         if (key.match(/(=|√x|\+\/-){1}/))
@@ -181,14 +191,18 @@ class Calculator {
                     } else if (key.match(/\C{1}/)) {
                         this.clear();
                     } else if (key.match(/(Del){1}/)) {
+                        if (displayVal.match(/0\.\B/) && displayVal.length !== 2)
+                            this.pop();
                         this.pop();
                     } else if (key.match(/\%{1}/)) {
                         this.replace('0');
                     } else if (key.match(/√x{1}/)) {
                         this.pop();
-                        this.replace(Math.fround(Math.sqrt(this.valueOnDisplay())));
+                        this.replace(Math.sqrt(this.valueOnDisplay()));
                     } else if (key.match(/(\+\/-){1}/)) {
                         return;
+                    } else if (key.match(/,{1}/) && displayVal[displayVal.length-1] !== '.') {
+                        this.write('0.');
                     } else {
                         this.replaceLast(key);
                     }
