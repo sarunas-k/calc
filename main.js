@@ -5,14 +5,16 @@ class Calculator {
     keyboardButtons = {};
     MAX_LENGTH = 16;
 
-    constructor(element) {
-        this.domElement = element;
+    constructor(keyboardElements) {
+        if (!keyboardElements || !(keyboardElements instanceof HTMLElement))
+            throw new Error('Constructor argument should be DOM element.');
+        this.domElement = keyboardElements;
         this.initKeyboard();
         this.clear();
     }
 
     setTo(value) {
-        document.getElementsByClassName('display')[0].innerText = value;
+        document.getElementsByClassName('display')[0].textContent = value;
     }
 
     clear() {
@@ -21,7 +23,7 @@ class Calculator {
 
     replace(value) {
         if (value.toString().length > this.MAX_LENGTH)
-            value = value.toString().slice(0,16);
+            value = value.toString().slice(0, 16);
         this.setTo(value);
     }
 
@@ -49,13 +51,13 @@ class Calculator {
     }
 
     valueOnDisplay() {
-        return document.getElementsByClassName('display')[0].innerText;
+        return document.getElementsByClassName('display')[0].textContent;
     }
 
     initKeyboard() {
         for (let i = 0; i < this.domElement.children.length; i++) {
             const button = this.domElement.children[i];
-            this.keyboardButtons[button.innerText] = button;
+            this.keyboardButtons[button.textContent] = button;
         }
         for (const key in this.keyboardButtons) {
             this.keyboardButtons[key].addEventListener('click', () => {
@@ -152,7 +154,12 @@ class Calculator {
                                 this.replace(result !== null ? Math.fround(result) : '0')
                             }
                         } else if (key.match(/(√x){1}/)) {
-                            this.replace(Math.fround(Math.sqrt(displayVal)));
+                            if (!displayVal.match(/^-\w+$/)) {
+                                this.replace(Math.fround(Math.sqrt(displayVal)));
+                            } else {
+                                this.replace('Error/Klaida');
+                                setTimeout(() => this.clear(), 2000);
+                            }
                             return;
                         } else if (key.match(/(\+\/-){1}/)) {
                             if (!displayVal.match(/^-\w+$/))
@@ -189,11 +196,10 @@ class Calculator {
             });
         }
     }
-
-
 }
 window.addEventListener('load', () => {
     new Calculator(document.getElementsByClassName('keyboard-operations')[0])
     document.getElementsByTagName('main')[0].style.left = '0';
     document.getElementsByTagName('main')[0].style.backgroundColor = 'tomato';
 });
+module.exports = Calculator;
