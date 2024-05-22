@@ -212,8 +212,27 @@ class Calculator {
     }
 }
 window.addEventListener('load', () => {
-    new Calculator(document.getElementsByClassName('keyboard-operations')[0])
+    window.calculator = new Calculator(document.getElementsByClassName('keyboard-operations')[0])
     document.getElementsByTagName('main')[0].style.left = '0';
-    document.getElementsByTagName('main')[0].style.backgroundColor = 'tomato';
+    document.getElementsByTagName('main')[0].style.backgroundColor = '#4b7c7c';
 });
+window.addEventListener(
+    "keydown",
+    (event) => {
+        if (window.calculator.keyboardButtons[event.key]) {
+            event.preventDefault();
+            event.stopPropagation();
+            window.calculator.keyboardButtons[event.key].dispatchEvent(new MouseEvent('click'))
+        } else if (event.key === 'Backspace' && window.calculator.keyboardButtons['Del']) {
+            window.calculator.keyboardButtons['Del'].dispatchEvent(new MouseEvent('click'))
+        } else if (event.key === 'Delete' && window.calculator.keyboardButtons['C']) {
+            window.calculator.keyboardButtons['C'].dispatchEvent(new MouseEvent('click'))
+        } else if (event.key === 'Enter' && window.calculator.keyboardButtons['=']) {
+            window.calculator.keyboardButtons['='].dispatchEvent(new MouseEvent('click'))
+        } else if (event.key === '.' && window.calculator.keyboardButtons[',']) {
+            window.calculator.keyboardButtons[','].dispatchEvent(new MouseEvent('click'))
+        }
+    },
+    true,
+  );
 module.exports = Calculator;
