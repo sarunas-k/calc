@@ -3,4 +3,8 @@ I haven't ever coded a calculator, which usually is one of the most common exerc
 Writing regex took some time. In my opinion, logic wasn't very difficult.
 ______________
 
-On second day added different unit tests and wrote another feature, calculator supports non whole numbers!
+On second day added different unit tests and wrote another feature, calculator supports non whole numbers
+and hopefully will get new UI soon.
+
+______________
+
