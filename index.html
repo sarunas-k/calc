@@ -5,91 +5,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculator</title>
-    <style>
-        body {
-            min-height: 80vh;
-            margin-top: 5vh;
-            font-size: 16px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: darkslategrey;
-        }
-
-        main {
-            padding: 4rem 2rem;
-            max-width: 22rem;
-            margin: 0 auto;
-            position: relative;
-            place-content: center;
-            display: grid;
-            background-color: white;
-            border-radius: .5rem;
-            left: -100%;
-            transition: all 1s linear;
-        }
-
-        .display {
-            background-color: white;
-            font-size: 2rem;
-            text-align: right;
-            padding: 0.8rem 0.5rem;
-        }
-
-        .keyboard-operations {
-            display: grid;
-            grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
-            grid-auto-flow: column;
-            gap: 0.6rem;
-            padding-top: 1rem;
-        }
-
-        button {
-            width: 4rem;
-            height: 4rem;
-            font-size: 1.5rem;
-        }
-
-        .overlay {
-            position: absolute;
-            width: 100%;
-            background-color: gray;
-            height: 100%;
-            border-radius: .5rem;
-            opacity: 0.8;
-        }
-
-        main:hover .overlay {
-            left: -24rem;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="./style.css" />
 </head>
 
 <body>
     <main>
         <div class="display"></div>
         <div class="keyboard-operations">
-            <button>%</button>
-            <button>*</button>
+            <button class="special">%</button>
             <button>7</button>
             <button>4</button>
             <button>1</button>
+            <button>0</button>
             <button disabled aria-disabled="true"></button>
-            <button>√x</button>
-            <button>/</button>
+            <button class="special">√x</button>
             <button>8</button>
             <button>5</button>
             <button>2</button>
-            <button>0</button>
-            <button>C</button>
-            <button>+</button>
+            <button>,</button>
+            <button>+/-</button>
+            <button class="main-btn">C</button>
             <button>9</button>
             <button>6</button>
             <button>3</button>
-            <button disabled aria-disabled="true"></button>
+            <button class="main-btn">=</button>
             <button>Del</button>
-            <button>-</button>
-            <button>+/-</button>
-            <button>=</button>
-            <button>,</button>
+            <button class="main-btn">Del</button>
+            <button class="special">/</button>
+            <button class="special">*</button>
+            <button class="special">-</button>
+            <button class="special">+</button>
             <button disabled aria-disabled="true"></button>
         </div>
         <!-- <div class="overlay"></div> -->

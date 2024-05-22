@@ -9,8 +9,8 @@
   "scripts": {
     "test": "jest"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["Calculator", "Kalkuliatorius", "Skaičiuotuvas"],
+  "author": "Šar",
   "license": "ISC",
   "devDependencies": {
     "jest": "^29.7.0",

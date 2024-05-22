@@ -1,0 +1,73 @@
+body {
+    min-height: 80vh;
+    margin-top: 5vh;
+    font-size: 16px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: darkslategrey;
+}
+
+main {
+    padding: 2rem;
+    max-width: 22rem;
+    margin: 0 auto;
+    position: relative;
+    place-content: center;
+    display: grid;
+    background-color: #4b7c7c;
+    border-radius: .5rem;
+    left: -100%;
+    transition: all 1s linear;
+}
+
+.display {
+    background-color: #d3edec;
+    font-size: 3rem;
+    text-align: right;
+    padding: 1.5rem 0.5rem;
+    border-radius: .5rem;
+}
+
+.keyboard-operations {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-auto-flow: column;
+    gap: 0.6rem;
+    padding-top: 1rem;
+}
+
+button {
+    width: 4rem;
+    height: 4rem;
+    font-size: 1.5rem;
+    border-radius: 50%;
+    border-width: 0;
+    background-color: #dcdcdc;
+}
+button:hover {
+    background-color: #efefef;
+}
+main button.special {
+    background-color: #84b2bb;
+}
+main button.special:hover {
+    border: 2px solid #aeced4
+}
+main button.main-btn {
+    background-color: #54bcbc
+}
+main button.main-btn:hover {
+    background-color: #53d5d5
+}
+
+.overlay {
+    position: absolute;
+    width: 100%;
+    background-color: gray;
+    height: 100%;
+    border-radius: .5rem;
+    opacity: 0.8;
+}
+
+main:hover .overlay {
+    left: -24rem;
+}
