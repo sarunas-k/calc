@@ -246,33 +246,33 @@ window.addEventListener(
     if (window.calculator.keyboardButtons[event.key]) {
       event.preventDefault();
       event.stopPropagation();
-      window.calculator.keyboardButtons[event.key].dispatchEvent(
-        new MouseEvent("click")
+      window.calculator.keyboardButtons[event.key].forEach((button) =>
+        button.dispatchEvent(new MouseEvent("click"))
       );
     } else if (
       event.key === "Backspace" &&
       window.calculator.keyboardButtons["Del"]
     ) {
-      window.calculator.keyboardButtons["Del"].dispatchEvent(
-        new MouseEvent("click")
+      window.calculator.keyboardButtons["Del"].forEach((button) =>
+        button.dispatchEvent(new MouseEvent("click"))
       );
     } else if (
       event.key === "Delete" &&
       window.calculator.keyboardButtons["C"]
     ) {
-      window.calculator.keyboardButtons["C"].dispatchEvent(
-        new MouseEvent("click")
+      window.calculator.keyboardButtons["C"].forEach((button) =>
+        button.dispatchEvent(new MouseEvent("click"))
       );
     } else if (
       event.key === "Enter" &&
       window.calculator.keyboardButtons["="]
     ) {
-      window.calculator.keyboardButtons["="].dispatchEvent(
-        new MouseEvent("click")
+      window.calculator.keyboardButtons["="].forEach((button) =>
+        button.dispatchEvent(new MouseEvent("click"))
       );
     } else if (event.key === "." && window.calculator.keyboardButtons[","]) {
-      window.calculator.keyboardButtons[","].dispatchEvent(
-        new MouseEvent("click")
+      window.calculator.keyboardButtons[","].forEach((button) =>
+        button.dispatchEvent(new MouseEvent("click"))
       );
     }
   },
